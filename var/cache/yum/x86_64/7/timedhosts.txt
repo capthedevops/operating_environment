@@ -1,0 +1,17 @@
+mirror.sov.uk.goscomb.net 0.0773980617523
+mirror.vorboss.net 0.0392739772797
+centos.serverspace.co.uk 0.0397250652313
+repo.uk.bigstepcloud.com 0.06565284729
+mirror.as29550.net 0.0780618190765
+mirrors.vooservers.com 0.0462079048157
+mirror.ox.ac.uk 0.0830991268158
+mirrors.ukfast.co.uk 0.0660009384155
+mirrors.melbourne.co.uk 0.0719661712646
+mirror.bytemark.co.uk 0.0646870136261
+www.mirrorservice.org 0.0540478229523
+mozart.ee.ic.ac.uk 0.0426669120789
+centos.mirrors.nublue.co.uk 0.246596097946
+mirror.mhd.uk.as44574.net 0.0450830459595
+mirror.econdc.com 0.0414018630981
+centos.mirroring.pulsant.co.uk 0.0517499446869
+mirror.freethought-internet.co.uk 0.0374789237976

@@ -1,0 +1,10 @@
+http://mirror.bytemark.co.uk/centos/7.3.1611/os/x86_64/
+http://mirror.mhd.uk.as44574.net/mirror.centos.org/7.3.1611/os/x86_64/
+http://mirror.as29550.net/mirror.centos.org/7.3.1611/os/x86_64/
+http://mozart.ee.ic.ac.uk/CentOS/7.3.1611/os/x86_64/
+http://mirrors.melbourne.co.uk/sites/ftp.centos.org/centos/7.3.1611/os/x86_64/
+http://mirror.ox.ac.uk/sites/mirror.centos.org/7.3.1611/os/x86_64/
+http://centos.serverspace.co.uk/centos/7.3.1611/os/x86_64/
+http://mirror.vorboss.net/centos/7.3.1611/os/x86_64/
+http://mirror.econdc.com/centos/7.3.1611/os/x86_64/
+http://mirror.sov.uk.goscomb.net/centos/7.3.1611/os/x86_64/

@@ -1,0 +1,1 @@
+-y --installroot=/images/base_centos_image/ install rpm-build yum

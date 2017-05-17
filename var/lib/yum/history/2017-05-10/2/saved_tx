@@ -1,0 +1,15 @@
+136:6607671a3df31dfa8e736ab711b2d9eee568fe09
+0
+4
+base:9363:1480942829
+extras:337:1492615681
+updates:1585:1494349060
+installed:137:0f1a4566002641da3007055dba7242ecdb36f825
+1
+mbr: vim-minimal,x86_64,2,7.4.160,1.el7_3.1 70
+  repo: updates
+  ts_state: u
+  output_state: 20
+  isDep: False
+  reason: user
+  reinstall: False

@@ -1,0 +1,1060 @@
+commit d53f48cc840cff16719765d7126e7b87db7bd948
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Feb 2 11:24:04 2010 +0200
+
+    Tarball creation tweaks
+    - add ChangeLog to tarballs
+    - make tagging non-interactive
+    - silence the tarball generation commands
+
+commit c73da1f920930dc6d10e0b8a347ddcaf689bca66
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Jan 26 17:33:19 2010 +0200
+
+    Leave rpm's hkp keyserver configuration alone
+    - rpm < 4.6 used to try and fetch and import any missing keys from
+      keyserver automatically on rpmdb iteration if hkp_keyserver was set, which
+      caused hideous slowdowns and huge load on pgp keyservers AND was a
+      security hazard as rpm thinks imported == trusted key. This is safe
+      enable now as rpm will only ever import keys when explicitly told to do
+      so with --import
+    - this makes pgp import directly from PGP servers work, ie
+       'rpm --import 0x<keyid>'
+
+commit 631ba9b6fe498fbc1e2a9c5f2955b4fa7a174a8c
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Jan 26 17:27:54 2010 +0200
+
+    Use $(NAME) instead of hardwired name everywhere in makefile
+
+commit a11368f98aa987913ede2d1d4207d99cac08c5e6
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Jan 26 16:09:35 2010 +0200
+
+    Remove config.guess and config.sub
+    - these used to have RH-specific hacks in them and %configure used to
+      copy updated versions to builddir on invocation but neither is done
+      now, these are just copies of upstream (libtool / automake) versions
+      so there's no point dragging them along
+    - some packages might expect to find them in /usr/lib/rpm/redhat/ so
+      perhaps spec should copy them at build-time from automake/libtool
+      to ensure a recent version
+
+commit de76474f3520ec1ebad85b2ad8263bc7da870b95
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Jan 26 15:52:39 2010 +0200
+
+    Remove "upstream reference" spec file
+    - this makes no sense as the spec needs to be separately maintained
+      for distribution versions separately anyway
+
+commit 7ec7e86b74528b69018fb0c18776ab12d1806044
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Jan 26 15:51:57 2010 +0200
+
+    Set version directly in Makefile (and bump the version)
+
+commit 1d1bd8e3cb31ef6448c811ea467bc05cbc01f217
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Jan 26 15:40:02 2010 +0200
+
+    Remove ancient and unused brp-redhat script
+    - this was last used eons ago somewhere in rpm 3.x - 4.[01] era
+
+commit 9d5f7858ba3fadc6372dd692720bde57e510ed2b
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Jan 26 14:42:20 2010 +0200
+
+    rpm >= 4.6.0 doesn't process macrofiles: from rpmrc anymore, remove
+    - macrofiles: is silently ignored by recent rpm versions, remove the
+      useless setting to avoid possible confusion
+
+commit 2a452bba1e3c24e25b6310d6538b56f33634925a
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Tue Jan 26 13:55:54 2010 +0200
+
+    Permit using different python version for brp-python-bytecompile (#521141)
+    - pass %{__python} macro to brp-python-bytecompile instead of using
+      hardwired /usr/bin/python, as suggested by Bowe Strickland
+
+commit bda00a1a70b5c006eef55c19bbe8530f0b1f5e6e
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 17:09:57 2010 +0200
+
+    Use rpm's perl dependency extractors
+    - rpm's dep extractors have gotten numerous improvements over the years,
+      while the ones here haven't seen any updates since 2002
+    - point the find-* scripts to rpm's scripts, remove the redundant and
+      outdated perl.* scripts
+
+commit ca3cae8695a41600cd274acd49120bdc9a7c6a06
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 16:27:43 2010 +0200
+
+    Make peace with newer git
+
+commit c57d60b64ee2515f93ffd118f715cd97bca0fca9
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 16:25:45 2010 +0200
+
+    Remove unused CVSROOT variable from Makefile
+
+commit f359c096c229bc7b44b5eded5ee6e79ce7e8f1d7
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:59:04 2010 +0200
+
+    Remove redundant %find_lang definition
+    - this was only useful back when we were using our own find-lang.sh
+
+commit 4c01ac82e67f95857f697079c65966023f400820
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:55:11 2010 +0200
+
+    Remove brp-sparc64-linux blast from the past
+    - kludgery like this might've been necessary back in 2000 to get started
+      with multilib setup but it certainly isn't needed now
+
+commit 56ed371d31e3f07d3a2ecab953769a55cb6cbbad
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:47:15 2010 +0200
+
+    Remove redundant and deprecated %_initrddir definition (#455279)
+    - this has been provided by rpm since forever, no need to carry it here
+
+commit 850eda59f82406f05dfe9d070ab4a32cdfd39e3b
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:43:38 2010 +0200
+
+    Disable autotools dependency tracking in %configure (#496522)
+    - autotools dependency tracking isn't generally useful in rpm builds;
+      disabling it results in cleaner build logs and possibly slight build speedups
+    - patch from Ville Skyttä
+
+commit c9d2ffe12342fb6dee7d45584a986cc049fb9a01
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:39:38 2010 +0200
+
+    Don't set --target in %configure (#458648)
+    - --target is only ever useful for handful of compiler toolchain packages
+      and cross-compiler packages are better off setting it themselves if
+      necessary, rpm messing here only gets in the way
+    - patch originally from Stepan Kasal
+
+commit f2e3413ddb57dd005d6dadfd8c9fe4e8cba01a66
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:34:07 2010 +0200
+
+    Enable overriding the default ./configure path of %configure (#489942)
+    - syncs up with rpm upstream setup
+    - FFLAGS has a Fedora-specific override forcing us to carry this %configure
+      copy, need to fix rpm to permit more fine-grained overrides...
+
+commit b5b2aedbc1df3175ebd3babbe08e51cede07b4ef
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:30:02 2010 +0200
+
+    Add filtering framework for external dependency generator (#516240)
+    - patch from Chris Weyl
+
+commit 82f9946bc0fef76f89fb467534a760f8305e78d7
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:26:58 2010 +0200
+
+    Speed up static archive stripping processing (#517101)
+    - only bother processing files named *.a instead of everything in buildroot
+    - patch from Adam Jackson
+
+commit e56e816f4708b2bf71f7f94e437a5a2463c3c5cc
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:25:17 2010 +0200
+
+    Enable use of XZ compression for binary rpm payloads
+    - as per https://fedoraproject.org/wiki/Features/XZRpmPayloads
+      - lowish compression preset level to keep deltarpm rebuild time tolerable
+      - source rpms dont really benefit from XZ compression as the contents are
+        typically tarballs which are already compressed
+    - patch from Bill Nottingham
+
+commit 159a65fb611beb4851efe96dbf1a7ced8859b7be
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:24:29 2010 +0200
+
+    Ensure empty buildroot for %install
+    - remove any existing buildroot contents and safely create a new one
+    - patch originally from OpenSUSE / Michael Schroeder, adopted to Fedora
+      by Tom "spot" Callaway
+
+commit f9c0aca4aef1c8d5d52dc1e190be7c25115e96fd
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:15:22 2010 +0200
+
+    Make i686 the default x86 architecture, optimize for Atom CPU
+    - as per http://fedoraproject.org/wiki/Features/F12X86Support
+    - patch from Bill Nottingham
+
+commit e2a80f379c269762117b406a9a078062760f2b0d
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:07:55 2010 +0200
+
+    Change default hashing algorithm in file digests to SHA-256 (#485826)
+    - as per https://fedoraproject.org/wiki/Features/StrongerHashes
+    - patch from  Miloslav Trmač
+
+commit 5c981d50724c15d1cf98b836f54c9183bb283f22
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:03:53 2010 +0200
+
+    Fedora 11 default buildflags
+    - as per http://fedoraproject.org/wiki/Features/ArchitectureSupport
+      - set 32 bit intel build arch to i586 on compatible hardware
+      - set 32 bit sparc build arch to sparcv9 on compatible hardware
+    - add missing armv7l arch
+    - set the default build arch to match fedora arm build target
+
+commit 3a2d93f3119168b4b46d3eb37fed9355f51dd8c2
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 15:02:51 2010 +0200
+
+    Limit _smp_mflags to max 16
+    - patch from Dennis Gilmore
+
+commit ab5323242024fceaae33e47d48245910ec88fdab
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 11:22:07 2010 +0200
+
+    Handle JAR files containing filenames with spaces (#243157, #461854, #547704)
+    - patch originally from  Peter Bieringer
+
+commit afe45959fba91d9d693c8d7502d30917aa032850
+Author: Panu Matilainen <pmatilai@redhat.com>
+Date:   Fri Jan 22 10:59:42 2010 +0200
+
+    Dont try to repack empty JAR's (#269481, #547699)
+    - patch originally from Kai Bolay
+
+commit 9ed9b4e3459e3125befd324f579f751a239c26ca
+Author: Jonathan Masters <jcm@londonpacket.bos.redhat.com>
+Date:   Tue May 6 19:08:20 2008 -0400
+
+    A variety of small cleanups
+
+commit fcf5e22a650b1a29b69c2d2f27bfb16f679580f8
+Author: Jon Masters <jcm@perihelion.(none)>
+Date:   Thu Apr 3 03:14:54 2008 -0400
+
+    Bump the release.
+
+commit 83405d773d2b0ee282dbed07353354dfce0df9b8
+Author: Jon Masters <jcm@perihelion.(none)>
+Date:   Thu Apr 3 03:11:24 2008 -0400
+
+    Update config.guess|sub, sync with RHEL-5.
+
+commit 0c5255b6381833ba582188b71ed2ab16f22fa706
+Author: Jon Masters <jcm@perihelion.(none)>
+Date:   Thu Apr 3 02:46:05 2008 -0400
+
+    Set package_name correctly.
+
+commit 75220114eb9cead135ca546aa30296bd9a44abe8
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Thu Jul 5 14:34:42 2007 -0400
+
+    conflict instead of requires
+
+commit e284fd4907967ad2d796e42b3c1f53bd6e2e8d94
+Author: Jesse Keating <jkeating at redhat dot com>
+Date:   Thu Jul 5 12:45:59 2007 -0400
+
+    Clean up dist junk; require right aged rpm (remove at F8 final time?)
+
+commit 9b11fc216b5153969ae78c19d293644d9495a370
+Author: Jesse Keating <jkeating at redhat dot com>
+Date:   Thu Jul 5 12:41:21 2007 -0400
+
+    Enable buildroot check by default
+
+commit 59155fec98cab9df1d8cecb88407903e6675e3fe
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:52:55 2007 -0400
+
+    bump version, add %dist bits, add lost changelog entries
+
+commit 9ffd96965483401331db5bc6a0184ef7c7273b37
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:38:34 2007 -0400
+
+    use stock find-lang rather than the (old) copy (#213041)
+
+commit d82d89ec837705583b4af019c4549f00034f79a2
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:36:18 2007 -0400
+
+    %{_gnu} gets defined in the platform definitions and _shouldn't_ be
+    -gnu on some arm arches (Lennert Buytenhek, #243523)
+
+commit 6b022102df774c5a11548346c2a2b673a68cffb5
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:35:57 2007 -0400
+
+    define optflags for modern arm arches (Lennert Buytenhek, #243523)
+
+commit e54f487738b9a0b01ef25260800ceaee3971403a
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:35:41 2007 -0400
+
+    report gnueabi if appropriate for arm (Lennert Buytenhek, #243523)
+
+commit 85ff3763b6d0a8bc16e44064efba1c78b9187e8d
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:28:50 2007 -0400
+
+    allow disabling jar repacking (#219731)
+
+commit 1b84f70101d2f01f74165a7047b77bb4bb9d6d25
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:24:12 2007 -0400
+
+    fix dist.sh --fc (#223651)
+
+commit a959c1f92d55d1829a6b1c3d45d765d8a4129551
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:20:53 2007 -0400
+
+    hardlink identical .pyc and .pyo files to save some space.  patch from
+    Ville Skyttä <ville DOT skytta AT iki DOT fi>
+
+commit 9f4238cef901ddf7aa9e249cac5297b529606a2b
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 14:16:16 2007 -0400
+
+    fix usage of TMPDIR (mattdm, #235614)
+
+commit 1b6281ab55613ba30a42c8888226098b108aa3d6
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 13:54:21 2007 -0400
+
+    add install and clean targets to makefile.  make the spec file be normal
+    instead of doing everything manually
+
+commit 5b4d287b6bcf99976c9e8aa1fdf132b22e4d4dfb
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 13:53:46 2007 -0400
+
+    fix the permissions on these as well so that we're not oding it from the spec
+    file
+
+commit 33fb6e3b6605600813401e56e97c80db80aba719
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 13:50:17 2007 -0400
+
+    use git bits for making the archive
+
+commit 19f1cde13bb14f6d92c55d12b73acf04eaa0235b
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 13:42:44 2007 -0400
+
+    fix perms
+
+commit acfbad4bf7d5bcd26e0ab2b48eb25ce201a0ae08
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 15:42:48 2007 +0000
+
+    bump spec file
+
+commit 95521bebac1aaca719bd99dbf055e5c4e67b3932
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 15:23:29 2007 +0000
+
+    add support for find-provides.d dir; use for modalias tracking (from jcm)
+
+commit feffba404a7ca764e403c7f27b4e18da939f4a32
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 15:21:46 2007 +0000
+
+    add support for kmps/kmodtool stuff (from jcm)
+
+commit 48c39c99dc02c52d67038cefd7610b24cf79c5f1
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 15:18:25 2007 +0000
+
+    patch from jcm to adjust kmod handling
+
+commit e053cecd416d037659dd8f933e9f1a3a418e0fa6
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Tue Jun 19 15:13:23 2007 +0000
+
+    add script that does repacking of jar files to avoid multilib conflicts.
+    originally written by Ben Konrath <bkonrath AT redhat DOT com>
+
+commit 97a32887d64bc2cbc7b6f04a07cb8f13544934bd
+Author: Jon Masters <jcm@redhat.com>
+Date:   Thu Oct 12 03:33:42 2006 +0000
+
+    Update upstream redhat-rpm-config release.
+
+commit c8ec9fb01f33746c8770ecfb31bd938e35490c74
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Fri Feb 3 23:00:26 2006 +0000
+
+    use -mtune=generic for x86 and x86_64
+
+commit 12233c1d7bc20c6230e84a6142cfa0adf40601db
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Aug 17 00:27:33 2005 +0000
+
+    fix #165416
+
+commit d3e0d601f6af5e38e23242d5b3ba66fbb7f5c82d
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Aug 1 17:54:09 2005 +0000
+
+    add wall back in
+
+commit d5e4ed68cb77afc6bf93dba94b605046d8255ffa
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Aug 1 17:53:18 2005 +0000
+
+    add wall back in
+
+commit 1986646f8544c9f84b8c3b07c151e581daf08a99
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Aug 1 17:44:57 2005 +0000
+
+    8.0.37:
+    
+    On Fri, 29 Jul 2005, Ulrich Drepper wrote:
+    
+    > Please find attached the hopefully final changes for the compile flags.
+    >  It's a patch against redhat-rpm-config-8.0.36-1.src.rpm.  The changes are:
+    >
+    > ~ enable stack protector with minimal size 4 (default is 8, too high
+    >   IMO).  Vlad ran some tests on SPEC.  SPEC is highly CPU intensive,
+    >   unlike 90%+ of the distribution.  Even in those tests the performance
+    >   decrease was below 1%, probably even in the noise.  Especially the
+    >   decrease of the minimum size to 4 made no measurable impact.
+    >
+    > ~ remove the -fsigned-char flag for ppc.  glibc has not been compiled
+    >   with the flag anyway, so if anything changes, we eliminate some bugs.
+    >   The only theoretical issue would be if a library we ship uses CHAR_MAX
+    >   in an interface.  I personally haven't seen this for good reasons.
+    >   The only interface I know is localeconv(3) in glibc and this interface
+    >   is now corrected.
+    >
+    > ~ minor fix for SPARC
+
+commit f20fd095421a750491811388ce17517035448417
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Jun 16 15:42:31 2005 +0000
+
+    fix
+
+commit b8c7c4c827f4f5ddbdf735cba1e072a3ffa82989
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jun 15 22:18:12 2005 +0000
+
+    Enable python, pkgconfig provides
+
+commit 5fc6cf03a1585a5829f9ad90b991ae63443c4d0f
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Jun 10 17:19:17 2005 +0000
+
+    fix 159117
+
+commit 1a959d38c8ca8bea6e932c068a49107f15763102
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Apr 7 03:10:39 2005 +0000
+
+    fix #129025
+
+commit 259bb7270c10dfc42922139c16555767d129c477
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Mar 24 20:10:06 2005 +0000
+
+    add dist.sh
+
+commit ded130c1dd5a1c1aa16f3c18fb41211184a993a4
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Mar 23 20:05:40 2005 +0000
+
+    new version
+
+commit 6eb38ebaff708ffa7e40a9010dc02592ce9df7dd
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Mar 23 19:52:10 2005 +0000
+
+    new version
+
+commit f41aa8c35fb2fb638772c036a24ad56089baef5f
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Tue Mar 22 03:30:56 2005 +0000
+
+    #147961
+
+commit 1518ff2d14377c05ecf7cf9428e42964516883b4
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Feb 9 15:09:11 2005 +0000
+
+    Fix java builds
+
+commit 89e3065f19c3763e3cb768759ce106292c445ec6
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Dec 3 19:28:33 2004 +0000
+
+    Add ppc64[ip]series optflags
+
+commit f8bcd4e337ec039040887d608c826595fbe56ca0
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Dec 3 18:52:37 2004 +0000
+
+    sync
+
+commit 6d1ad8ea36efc07d71def0959ad97d2d73491a53
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Dec 2 20:54:26 2004 +0000
+
+    sparcv8 support (#117302)
+
+commit d10e27e7b757991e6a1cbc62e0b1a772fb7f9ac8
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Nov 15 15:23:30 2004 +0000
+
+    add _FORTIFY_SOURCE
+
+commit 84b567815c745a5f34e3bc3ecc917d7cd40d8c75
+Author: Adrian Havill <havill@redhat.com>
+Date:   Fri Oct 15 21:02:36 2004 +0000
+
+    add "-f" (--force) to gunzip and bunzip2 for corner cases so that rpmbuild
+    doesn't interactively ask to overwrite when it doesn't need to
+
+commit 7a4e10bb6560b90d44ae0a7ee43f419140a5aae9
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Oct 1 18:54:27 2004 +0000
+
+    don't filter symbol versioning
+
+commit 4b07b8dbc67bd2cfa73d5d5ca67e04398bf0cd69
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Jun 28 19:48:43 2004 +0000
+
+    8.0.31
+
+commit 0f91dc03fc4d0ce3a5b5b672d25e40eb68787515
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Jun 28 14:07:05 2004 +0000
+
+    add optflags for PPC 8260/8520
+
+commit c9593fd884a918e831ac434479be88a5f7bed610
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Jun 25 16:16:14 2004 +0000
+
+    fix typo
+
+commit fbb9bd1577195638ec67be49ec986c8d67b22dcd
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Jun 25 16:15:56 2004 +0000
+
+    oops
+
+commit 2c52d52eec5577c9ec1aaf8f372067120d8a96c5
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Jun 25 16:02:37 2004 +0000
+
+    8.0.29
+
+commit 3e612b63b980f85179a05951af3693267ba974c3
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Jun 25 16:01:38 2004 +0000
+
+    sync
+
+commit 92708fa5156c9ba4a084ad5ef709872ac78c00d9
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Apr 23 14:23:32 2004 +0000
+
+    #117217
+
+commit 2eb59b7156aea3058bdcbce7bf334cf1017dad43
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Mar 1 17:29:43 2004 +0000
+
+    sync
+
+commit ecdfe2c6d31c7aefdd9f110d601e04af2e90f8f8
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Nov 3 20:35:50 2003 +0000
+
+    fix 108049
+
+commit 421fb7784f226ae86c53a19970dae5e8133506e5
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Sep 17 12:41:38 2003 +0000
+
+    8.0.28-1.1
+
+commit ff150bb9f8902c9b3b418a9c49c59eb9493ad0c0
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Sep 17 12:36:32 2003 +0000
+
+    8.0.28
+
+commit 4ccbbe76dcd137e924faa6b4b5668f29720e37fc
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Tue Jul 15 13:44:02 2003 +0000
+
+    8.0.27-1
+
+commit a2894a5e9a3ee9cb1c7344b59b9aba6dee6b79df
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Tue Jul 15 13:38:58 2003 +0000
+
+    8.0.27-1
+
+commit 9d388dbd199f0f73e514337708c947cb630a9295
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Mon Jul 7 02:32:13 2003 +0000
+
+    * Mon Jul  7 2003 Jens Petersen <petersen@redhat.com> - 8.0.26-1
+    - preserve the vendor field when VENDOR not set
+    - put VENDOR in the final i386-libc line, not the tentative one
+
+commit 7bf42f4c8de0b93f5ab7fc22fb841bb46bf7eb0c
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Mon Jul 7 01:18:33 2003 +0000
+
+    * Mon Jul 07 2003 Jens Petersen <petersen@redhat.com> - 8.0.25-1
+    - update config.{guess,sub} to 2003-06-17
+    - define VENDOR to be redhat only when /etc/redhat-release present
+      [suggested by jbj]
+    - put VENDOR in vendor field in our config.guess file for
+      ia64, ppc, ppc64, s390, s390x, x86_64 and elf32-i386 Linux
+    - drop the --host, --build, --target and --program-prefix configure options
+      from %%configure, since this causes far too many problems
+
+commit fb0d40d7ad1a3c5766ff57e015f02015669e4c86
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Fri May 2 10:05:02 2003 +0000
+
+    For Cambridge too.
+
+commit dec5bd1983641e999761a0110f83982b7023f852
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Fri May 2 10:00:46 2003 +0000
+
+    8.0.24-2
+    - force config.{guess,sub} executable by chmod in spec file.
+
+commit 0c7a682bd0fa5e7df86239fd690fd672db6c8737
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Fri May 2 09:51:49 2003 +0000
+
+    8.0.24-1
+    - Re-add config.{sub,guess} executable.
+
+commit b14b80a9807f93b0f053decc287b5cc710ce9f8d
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Fri May 2 09:48:05 2003 +0000
+
+    Remove non-executable config.{sub,guess}.
+
+commit 7bd518af03088f8f2981561de0eced096b8f80ff
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Fri May 2 09:41:17 2003 +0000
+
+    Up the release.
+
+commit 3f7f45e72adf246accf1dc403d62357f9a59dfc8
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Fri May 2 09:27:06 2003 +0000
+
+    8.0.23-1
+    - make config.{guess,sub} executable
+
+commit 0a7adcf3755a24897a74213a7bc87e99aa5ac1a2
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Thu May 1 12:27:40 2003 +0000
+
+    8.0.22-2 for Taroon
+
+commit 1688b1245423162342c1faaba19d43b48332d681
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Thu May 1 08:19:29 2003 +0000
+
+    8.0.22-1
+    - apply s390 patch to config.sub
+
+commit 2a08d4631885aad8d715a58dd1bfd16e888e5c6e
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Thu May 1 08:13:14 2003 +0000
+
+    - add config.guess and config.sub (2003-02-22)
+    - make %%configure use them
+
+commit 4410abdbbbe69200ca2260ec02d53b1ba746668d
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Mar 3 16:16:20 2003 +0000
+
+    Unset $DISPLAY in macros
+
+commit ae8ce229ab77d1783cc5809ec7d8f81fa6c2a069
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Feb 24 18:39:29 2003 +0000
+
+    8.0.21
+
+commit e7eb34f0891695613ee90e6133f6684baa57443f
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Feb 13 16:33:31 2003 +0000
+
+    Reorganize rpmrc/macros to set cflags in a nicer manner.
+
+commit 47b9f849d4eaa77fff73444507bb07d09b3a9d8b
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jan 22 18:30:56 2003 +0000
+
+    8.0.19
+
+commit 7d233e283eb7dfe405f01c6c75c9443cf76307ee
+Author: Nalin Dahyabhai <nalin@redhat.com>
+Date:   Mon Jan 20 20:06:50 2003 +0000
+
+    add brp-implant-ident-static, which requires mktemp
+
+commit fd6018eddb03564b16ae805c2b2524efbd2b964c
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jan 9 19:52:24 2003 +0000
+
+    happy new year
+
+commit 3397996dd936b6e09111e5c9a0e2de83b1f85f34
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jan 9 19:52:00 2003 +0000
+
+    add brp-strip-static-archive
+
+commit 89a0b75d713d23fa66b9fee671418997d2520d8b
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 17 07:12:32 2002 +0000
+
+    make '-g' in optflags dependent on whether or not debug_package has a
+    value. This is Ugly(tm).
+
+commit 5fbe73ed9169cc7ea2a64d5b3c3d3b4152a7ae45
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Dec 16 18:53:55 2002 +0000
+
+    8.0.15-1
+
+commit 1640cd5cac6e1308de8f303e95089053e7f5c9b5
+Author: Tim Powers <timp@redhat.com>
+Date:   Sat Dec 14 20:37:32 2002 +0000
+
+    more debug macro tweaks
+
+commit 28188548fc32289ab108d06b2d6f693da742d653
+Author: Tim Powers <timp@redhat.com>
+Date:   Sat Dec 14 18:01:21 2002 +0000
+
+    forgot the changelog
+
+commit 4707ac95be01a199d575544ad03a33d934b829a9
+Author: Tim Powers <timp@redhat.com>
+Date:   Sat Dec 14 17:57:23 2002 +0000
+
+    add internal dep generation macro, turn it on
+
+commit ff2bb8193467ec983ef3ad4a64fa535d69f51056
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Dec 13 23:04:56 2002 +0000
+
+    use internal dependency generator
+
+commit d4c201f55593bd7c9eb13c784e6205f4c400d619
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Dec 13 17:20:16 2002 +0000
+
+    8.0.12-1
+
+commit d18a947668e119ae692467d907098969d7ab054b
+Author: Alexander Larsson <alexl@redhat.com>
+Date:   Fri Dec 13 17:13:18 2002 +0000
+
+    Make a temporary copy of the debug_package macro so that we get the noarch fix
+
+commit cec7d078f8d1d1458ccf7a6f67b99828ea2652a8
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Dec 11 18:05:00 2002 +0000
+
+    someday I will get it right
+
+commit 09f5ffd107613802d6fb00ac972be72ec9bb22e6
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Dec 11 15:39:47 2002 +0000
+
+    add -g
+
+commit e44c237bfbab96439a6c527fa8cd0d108caaadf2
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Dec 11 15:05:08 2002 +0000
+
+    8.0.9
+
+commit 555b69e7a21f7a25b8a45a5ceafd59f4aec1a207
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Dec 4 04:57:53 2002 +0000
+
+    i like make archive :)
+
+commit 47209decbed507e488d30fb871a356eacdb8899f
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Dec 4 04:55:22 2002 +0000
+
+    nuke -g
+
+commit c643f846cea472bad5172421417e905f9c4b9ade
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Nov 25 20:44:00 2002 +0000
+
+    8.0.7-2
+
+commit 3f184f50a8264627bd45d76080dac5107aaf431c
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Nov 25 19:27:56 2002 +0000
+
+    add -g
+
+commit 389ef3b0722786331a2127c19ee74ba9c61ade1a
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Nov 22 18:57:51 2002 +0000
+
+    8.0.7
+
+commit dce3663fe68413c7fd23b4b0878a9b98bca7e828
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Nov 22 18:56:01 2002 +0000
+
+    enable debug packages, etc.
+
+commit 53cca9f509d822fb9208273c86a2f563878ce5d6
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Nov 21 17:22:31 2002 +0000
+
+    More reasons why rpmrc's "macrofiles" directive is broken.
+
+commit 1de7d81cf05827bfc39d31de238cddc962ffff74
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Nov 21 16:54:33 2002 +0000
+
+    Pass __strip and __objdump macros
+
+commit 3b777d0999f8008f19f2b84324b895f7e5749d67
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Nov 21 15:16:38 2002 +0000
+
+    8.0.5
+
+commit 27ac1446b099a61a4ae1a28069a8aef9163a61ce
+Author: Alexander Larsson <alexl@redhat.com>
+Date:   Wed Nov 20 16:55:36 2002 +0000
+
+    Make brp-strip* not strip debug objects
+    Add a _enable_debug_packages macro (commented out)
+
+commit f3e01161c3636836367c73dbb5e1594175a738fe
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Nov 14 12:48:21 2002 +0000
+
+    Fix from bug #77849.
+
+commit d4970a5d33d3edac755cb702ac7d2670eb551408
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Nov 6 16:32:52 2002 +0000
+
+    8.0.4
+
+commit fa316006e8ce85e74f54c6bfbbf6ef70e61f3649
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Oct 31 16:23:46 2002 +0000
+
+    remove tracking dependency
+
+commit 164e1163e427b2a731af2848217b04064b97b674
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Mon Oct 21 15:28:51 2002 +0000
+
+    find-lang fix(?) for symlinks
+
+commit 0a68ef9360bc52f57cabbd90bc5deb8fd502b37e
+Author: Phil Knirsch <pknirsch@redhat.com>
+Date:   Wed Oct 16 18:07:49 2002 +0000
+
+    - Added fix for outdated config.[sub|guess] files in %configure section.
+
+commit d5044b55bfe6cc43c15803ee3f24348f4f788acc
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Oct 16 17:19:55 2002 +0000
+
+    8.0.3
+
+commit 7f05ca8c77bbc56ee514b430f007f977ad18bdcc
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Oct 4 13:45:14 2002 +0000
+
+    Be stricter now.
+
+commit be06bd913d9620a0cd92326d73bbaae4b35b2fc6
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Thu Oct 3 16:32:45 2002 +0000
+
+    bump to 8.0.2, add a changelog entry
+
+commit 8a919b8bb95886511ca57419d99e440a26422f27
+Author: Jeremy Katz <katzj@redhat.com>
+Date:   Thu Oct 3 16:31:51 2002 +0000
+
+    We shouldn't be redefining everything in the redhat-rpm-config macros
+    file, because that will start overriding things like %{_lib} -- probably
+    more could have been snipped, but the remaining bits are at least
+    moderately reasonable to make sure are defined according to "our policy"
+
+commit 61fb9e24ccaab07764010c1ab67e04ee5282b02c
+Author: Alexander Larsson <alexl@redhat.com>
+Date:   Mon Sep 16 16:22:01 2002 +0000
+
+    Add debug package support to %__spec_install_post
+
+commit bfb314aef89d7e9a33b423dc2d1dddca7cb9c472
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Sep 4 03:12:16 2002 +0000
+
+    bump version
+
+commit 122edab4162312fa15199619e1087e91ead2bfea
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Aug 28 18:45:29 2002 +0000
+
+    7.3.94
+
+commit 3031bc234c0257a9c70abbc7977a51d6ed444d0a
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jul 31 18:57:20 2002 +0000
+
+    7.3.93
+
+commit f0352fc0402f267c8ea880a0cb3c115f669848a3
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jul 31 18:56:20 2002 +0000
+
+    Part two of new macros
+
+commit 00cbca969b970ded6d3d0a7061b6cd5de1a08de6
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jul 31 17:05:22 2002 +0000
+
+    Add comment about missing docs flag.
+
+commit 7f634c575d0613ad1ea113e57deaa8ef931fd9dd
+Author: Karsten Hopp <karsten@redhat.com>
+Date:   Mon Jul 15 13:45:55 2002 +0000
+
+    typo
+
+commit 8617b2fe71e17516c25cdc026c920e38ea738bca
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Jul 11 18:48:52 2002 +0000
+
+    find-requires fix from 67325
+
+commit 38aa58396700a1bbc85751f62f208a926588d9d2
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Jul 11 18:46:14 2002 +0000
+
+    find-lang.sh fix from 67368
+
+commit 3faabb2c8f5daf7815c8959383da39418d30db9b
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Jul 11 18:43:40 2002 +0000
+
+    fix from 67368
+
+commit 3827110e0a259e79ee42e61454f4af679f04be44
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Jul 11 17:07:42 2002 +0000
+
+    Add /etc/rpm/macros back to make #67951 go away
+
+commit 22b27c88b968f8271110c98e0b8d1d4198a06002
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Fri Jun 28 06:19:26 2002 +0000
+
+    tidy rpm changelog entry
+
+commit cb63b82a2d671a5b4f4224c5156a343906d53a9f
+Author: Jens Petersen <petersen@redhat.com>
+Date:   Fri Jun 28 05:25:23 2002 +0000
+
+    Add %{?_gnu} to _target_platform.
+    Use --host, --build, --target and --program-prefix in %configure.
+    7.3.92-4
+
+commit f6a0040f2b3ed22b5d697359b04ce7e40f071568
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jun 26 14:24:45 2002 +0000
+
+    ~/.rpmmacros
+
+commit 3687e63a720668cb7f0d103f3c51374426ef1465
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Jun 21 18:17:17 2002 +0000
+
+    sync
+
+commit d5db7f5dedf550d1fc672c1d9e8977ca3e5d830b
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Fri Jun 21 18:13:56 2002 +0000
+
+    7.3.92-2
+
+commit 3ee6bad5b99ab12d786901af2a32efcf46e3a456
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Jun 20 20:56:07 2002 +0000
+
+    find-lang fixes
+
+commit 8c076a37c8c2481ea2ff46a86d07d27b54cb0168
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Thu Jun 20 20:56:07 2002 +0000
+
+    find-lang fixes
+
+commit 668485e883b9e951c5bdf77f76634eae6cf02059
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jun 12 21:04:24 2002 +0000
+
+    Locale hack.
+
+commit 99968383d11f9b8dece46df2b5f3ea549ea2c6e0
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jun 12 13:26:24 2002 +0000
+
+    7.3.91
+
+commit f494dd7f794031a799d5c56eedbc2b98f2598e53
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jun 12 13:19:22 2002 +0000
+
+    7.3.91
+
+commit 72cfc641ce0b8da9d6e8503b37826b7350e25c34
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jun 12 13:18:39 2002 +0000
+
+    sync
+
+commit 03bb2914eabf0d4ae7fcd59da272db326969288a
+Author: Elliot Lee <sopwith@redhat.com>
+Date:   Wed Jun 12 12:59:50 2002 +0000
+
+    Initial revision

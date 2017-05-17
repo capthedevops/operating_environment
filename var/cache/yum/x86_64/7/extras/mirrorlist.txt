@@ -1,0 +1,10 @@
+http://mirrors.vooservers.com/centos/7.3.1611/extras/x86_64/
+http://mirror.as29550.net/mirror.centos.org/7.3.1611/extras/x86_64/
+http://mirrors.ukfast.co.uk/sites/ftp.centos.org/7.3.1611/extras/x86_64/
+http://mirror.sov.uk.goscomb.net/centos/7.3.1611/extras/x86_64/
+http://centos.mirroring.pulsant.co.uk/7.3.1611/extras/x86_64/
+http://mirror.bytemark.co.uk/centos/7.3.1611/extras/x86_64/
+http://mirror.freethought-internet.co.uk/centos/7.3.1611/extras/x86_64/
+http://centos.mirrors.nublue.co.uk/7.3.1611/extras/x86_64/
+http://mozart.ee.ic.ac.uk/CentOS/7.3.1611/extras/x86_64/
+http://repo.uk.bigstepcloud.com/centos/7.3.1611/extras/x86_64/
